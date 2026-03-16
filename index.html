@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GeoSense</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts: Syne + DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient background blobs -->
+  <div class="ambient" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo logo-img">
+        <img src="android-chrome-512x512.png" alt="GeoSense Logo" />
+      </div>
+      <div class="title">
+        <h1>Geo<span class="accent-text">Sense</span></h1>
+        <small>Discover places around you</small>
+      </div>
+    </div>
+
+    <div class="controls">
+      <span class="toggle-label">☀</span>
+      <label class="switch"><input id="darkToggle" type="checkbox"><span class="slider"></span></label>
+      <span class="toggle-label">☾</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside class="panel">
+      <div class="panel-section">
+        <label for="searchInput" class="label"><i class="fa-solid fa-magnifying-glass"></i> Search</label>
+        <div class="input-wrap">
+          <input id="searchInput" placeholder="Filter by name (optional)" />
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <label class="label"><i class="fa-solid fa-face-smile"></i> Mood / Category</label>
+        <div class="mood-grid">
+          <button class="mood-btn active" data-type="cafe">
+            <span class="mood-icon">☕</span><span>Work Café</span>
+          </button>
+          <button class="mood-btn" data-type="restaurant">
+            <span class="mood-icon">🕯️</span><span>Date Night</span>
+          </button>
+          <button class="mood-btn" data-type="fast_food">
+            <span class="mood-icon">🍔</span><span>Quick Bite</span>
+          </button>
+          <button class="mood-btn" data-type="cheap">
+            <span class="mood-icon">💰</span><span>Budget</span>
+          </button>
+          <button class="mood-btn" data-type="bar">
+            <span class="mood-icon">🍺</span><span>Bar</span>
+          </button>
+          <button class="mood-btn" data-type="park">
+            <span class="mood-icon">🌿</span><span>Park</span>
+          </button>
+          <button class="mood-btn" data-type="library">
+            <span class="mood-icon">📚</span><span>Library</span>
+          </button>
+          <button class="mood-btn" data-type="gym">
+            <span class="mood-icon">💪</span><span>Gym</span>
+          </button>
+          <button class="mood-btn" data-type="pharmacy">
+            <span class="mood-icon">💊</span><span>Pharmacy</span>
+          </button>
+          <button class="mood-btn" data-type="hotel">
+            <span class="mood-icon">🏨</span><span>Hotel</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <label class="label"><i class="fa-solid fa-circle-dot"></i> Radius: <span id="radiusValue">1500</span> m</label>
+        <div class="slider-track">
+          <input id="radius" type="range" min="500" max="5000" step="100" value="1500" />
+          <div class="slider-fill" id="sliderFill"></div>
+        </div>
+        <div class="slider-labels"><span>500m</span><span>5km</span></div>
+      </div>
+
+      <div class="panel-section">
+        <label class="label"><i class="fa-solid fa-arrow-up-wide-short"></i> Sort By</label>
+        <select id="sortBy">
+          <option value="distance">📍 Closest First</option>
+          <option value="rating">⭐ Highest Rated</option>
+          <option value="name">🔤 Name (A–Z)</option>
+        </select>
+      </div>
+
+      <div class="panel-actions">
+        <button id="locateBtn" class="btn-locate">
+          <i class="fa-solid fa-location-crosshairs"></i> My Location
+        </button>
+        <button id="findBtn" class="btn-find">
+          <i class="fa-solid fa-magnifying-glass"></i> Find Places
+        </button>
+      </div>
+
+      <div class="panel-footer">
+        <i class="fa-brands fa-openstreetmap"></i> Data: OpenStreetMap contributors
+      </div>
+    </aside>
+
+    <section class="map-section">
+      <div id="map"></div>
+
+      <div id="resultsHeader" class="results-header hidden">
+        <span id="resultsCount"></span>
+        <button id="clearFavsBtn" class="tiny-btn"><i class="fa-solid fa-trash"></i> Clear Favourites</button>
+      </div>
+
+      <div id="results" class="results">
+        <div class="empty-state">
+          <div class="empty-icon">🗺️</div>
+          <p>Set your mood &amp; hit <strong>Find Places</strong></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+
+  <footer class="site-footer">
+    <span>© <span id="footerYear"></span> GeoSense - Created By Arghyadip Ghosh | All rights reserved.</span>
+    <span class="footer-sep">·</span>
+    
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
