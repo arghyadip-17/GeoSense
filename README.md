@@ -1,10 +1,10 @@
-# 🌍 GeoSense
+# 🌍 GeoSense - Discover Places Around You
 
 GeoSense is a location-aware web application that demonstrates how geographic data and modern web technologies can be combined to create interactive, real-world applications.
 
 The project focuses on using browser geolocation and map-based interfaces to display useful information about places and surroundings.
 
-🔗 Live Demo: https://arghyadip-17.github.io/GeoSense/
+🔗 Live Website: https://geosense-ai.vercel.app/
 
 ---
 
