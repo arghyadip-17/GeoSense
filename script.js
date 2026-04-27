@@ -166,8 +166,7 @@ async function findPlaces(){
   findBtn.classList.add('loading');
 
   const query = buildOverpassQuery(moodKey, radius, userLat, userLon, search);
-  const url = `https://overpass-api.de/api/interpreter?data=${query}`;
-
+  const url = `https://overpass.kumi.systems/api/interpreter?data=${query}`;
   try {
     const resp = await fetch(url);
     if(!resp.ok) throw new Error('Overpass API error ' + resp.status);
